@@ -151,7 +151,7 @@ public class SharedActivity : ISharedActivity
     public async Task Dns01Precondition([ActivityTrigger] IReadOnlyList<string> dnsNames)
     {
         // DNS zone が存在するか確認
-        var zones = await _dnsProviders.ListAllZonesAsync();
+        var zones = await _dnsProviders.ListAllZonesAsync(_logger);
 
         var foundZones = new HashSet<DnsZone>();
         var notFoundZoneDnsNames = new List<string>();

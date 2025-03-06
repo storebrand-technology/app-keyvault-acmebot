@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.Logging;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Dns.v1;
 using Google.Apis.Dns.v1.Data;
@@ -31,7 +31,7 @@ public class GoogleDnsProvider : IDnsProvider
 
     public int PropagationSeconds => 60;
 
-    public async Task<IReadOnlyList<DnsZone>> ListZonesAsync()
+    public async Task<IReadOnlyList<DnsZone>> ListZonesAsync(ILogger logger = null)
     {
         var zones = await _dnsService.ManagedZones.List(_credsParameters.ProjectId).ExecuteAsync();
 

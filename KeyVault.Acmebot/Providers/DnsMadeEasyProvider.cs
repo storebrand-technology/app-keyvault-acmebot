@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.Logging;
 using KeyVault.Acmebot.Internal;
 using KeyVault.Acmebot.Options;
 
@@ -27,7 +27,7 @@ public class DnsMadeEasyProvider : IDnsProvider
 
     public int PropagationSeconds => 10;
 
-    public async Task<IReadOnlyList<DnsZone>> ListZonesAsync()
+    public async Task<IReadOnlyList<DnsZone>> ListZonesAsync(ILogger logger = null)
     {
         var zones = await _client.ListZonesAsync();
 

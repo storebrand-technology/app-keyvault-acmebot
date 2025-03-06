@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.Logging;
 using Azure.Core;
 using Azure.Security.KeyVault.Keys.Cryptography;
 
@@ -33,7 +33,7 @@ public class TransIpProvider : IDnsProvider
 
     public int PropagationSeconds => 360;
 
-    public async Task<IReadOnlyList<DnsZone>> ListZonesAsync()
+    public async Task<IReadOnlyList<DnsZone>> ListZonesAsync(ILogger logger = null)
     {
         var zones = await _transIpClient.ListZonesAsync();
 

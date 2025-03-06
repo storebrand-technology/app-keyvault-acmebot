@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.Logging;
 using Azure;
 using Azure.Core;
 using Azure.ResourceManager;
@@ -24,7 +24,7 @@ internal class AzurePrivateDnsProvider : IDnsProvider
 
     public int PropagationSeconds => 10;
 
-    public async Task<IReadOnlyList<DnsZone>> ListZonesAsync()
+    public async Task<IReadOnlyList<DnsZone>> ListZonesAsync(ILogger logger = null)
     {
         var zones = new List<DnsZone>();
 

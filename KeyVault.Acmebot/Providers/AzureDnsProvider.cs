@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.Logging;
 using Azure;
 using Azure.Core;
 using Azure.ResourceManager;
@@ -24,19 +25,24 @@ public class AzureDnsProvider : IDnsProvider
 
     public int PropagationSeconds => 10;
 
-    public async Task<IReadOnlyList<DnsZone>> ListZonesAsync()
+    public async Task<IReadOnlyList<DnsZone>> ListZonesAsync(ILogger logger = null)
     {
         var zones = new List<DnsZone>();
-
-        var subscription = await _armClient.GetDefaultSubscriptionAsync();
-
-        var result = subscription.GetDnsZonesAsync();
-
-        await foreach (var zone in result)
+        try
         {
-            zones.Add(new DnsZone(this) { Id = zone.Id, Name = zone.Data.Name, NameServers = zone.Data.NameServers });
-        }
+            var subscription = await _armClient.GetDefaultSubscriptionAsync();
 
+            var result = subscription.GetDnsZonesAsync();
+
+            await foreach (var zone in result)
+            {
+                zones.Add(new DnsZone(this) { Id = zone.Id, Name = zone.Data.Name, NameServers = zone.Data.NameServers });
+            }
+        }
+        catch (Exception ex)
+        {
+            logger?.LogError(ex, "Error during listing DNS zones for Subscription");
+        }
         return zones;
     }
 

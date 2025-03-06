@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.Logging;
 using Amazon;
 using Amazon.Route53;
 using Amazon.Route53.Model;
@@ -24,7 +24,7 @@ public class Route53Provider : IDnsProvider
 
     public int PropagationSeconds => 10;
 
-    public async Task<IReadOnlyList<DnsZone>> ListZonesAsync()
+    public async Task<IReadOnlyList<DnsZone>> ListZonesAsync(ILogger logger = null)
     {
         var zones = await _amazonRoute53Client.ListHostedZonesAsync();
 
